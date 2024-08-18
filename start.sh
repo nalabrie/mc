@@ -2,29 +2,12 @@
 
 set -euo pipefail
 
-#? === FUNCTIONS ===
-
-# start all tmux sessions with a given name
-# pane will be 150x50 characters in size (to limit line wrapping when detached)
-# $1: session name
-start_tmux_sessions() {
-    tmux new-session -d -s "$1" -x 150 -y 50
-    tmux new-session -d -s "${1}_manager" -x 150 -y 50
-}
-
-# stop all tmux sessions with a given name
-# $1: session name
-stop_tmux_sessions() {
-    tmux kill-session -t "$1"
-    tmux kill-session -t "${1}_manager"
-}
-
 #? === SETUP ===
 
 # cd to this script's directory
 cd "$(dirname "$0")"
 
-# source variables
+# source variables, functions, and constants
 source vars.sh
 
 # check if python virtual environment exists
@@ -50,25 +33,19 @@ for path in "$UPDATE_SERVER_SCRIPT_PATH" "$LOCAL_BACKUP_SCRIPT_PATH" "$REMOTE_BA
 done
 chmod +x "$UPDATE_SERVER_SCRIPT_PATH" "$LOCAL_BACKUP_SCRIPT_PATH" "$REMOTE_BACKUP_SCRIPT_PATH" "$RUN_SERVER_SCRIPT_PATH" "$MANAGER_SCRIPT_PATH"
 
-#? === UPDATE & START SERVER ===
+# ? === START MANAGER ===
 
 # cd to server directory
 cd "$SERVER_ROOT/$SERVER_NAME"
 
 # make tmux sessions for the server and the server manager
+# they will inherit the current shell's environment (e.g. virtual environment, variables, CWD, etc.)
 start_tmux_sessions "$SERVER_NAME"
-
-# update the server
-# run the server if the update is successful
-if "$UPDATE_SERVER_SCRIPT_PATH" "$SERVER_ROOT/$SERVER_NAME"; then
-    tmux send-keys -t "$SERVER_NAME" "\"$RUN_SERVER_SCRIPT_PATH\" $RAM" Enter
-else
-    echo "Failed to update the server. Server not started."
-    stop_tmux_sessions "$SERVER_NAME"
-    exit 1
-fi
-
-# ? === START MANAGER ===
 
 # run the manager script
 tmux send-keys -t "${SERVER_NAME}_manager" "$MANAGER_SCRIPT_PATH" Enter
+
+echo "
+Server started.
+Use 'tmux a -t $SERVER_NAME' to attach to the server console.
+Use 'tmux a -t ${SERVER_NAME}_manager' to attach to the server manager console."
