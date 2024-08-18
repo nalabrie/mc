@@ -1,5 +1,7 @@
 # shellcheck disable=SC2034
 
+#? === USER VARIABLES ===
+
 # **********************************************
 # *** CHANGE THESE VALUES TO SUIT YOUR SETUP ***
 # ***      DO NOT CHANGE ANYTHING ELSE       ***
