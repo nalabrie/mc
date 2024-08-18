@@ -3,9 +3,13 @@
 set -euo pipefail
 
 # Description:  Server manager script.
-#       Usage:  WIP
+#       Usage:  manager.sh <path to vars.sh>
 
-source vars.sh
+#? === MAIN ===
+
+# source given path to vars.sh (hacky, but whatever)
+# shellcheck disable=SC1090
+source "$1"
 
 # update the server
 # run the server if the update is successful
