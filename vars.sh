@@ -15,8 +15,9 @@ REMOTE_BACKUP_DIR="DISABLE"    # remote backup directory (set to DISABLE to disa
 # *** DO NOT CHANGE ANYTHING BELOW THIS LINE ***
 # **********************************************
 
-UPDATE_SERVER_SCRIPT_PATH="$(dirname "$0")/UpdateServer.py"  # updates the server
-LOCAL_BACKUP_SCRIPT_PATH="$(dirname "$0")/local_backup.sh"   # local server backup script
-REMOTE_BACKUP_SCRIPT_PATH="$(dirname "$0")/remote_backup.sh" # remote server backup script
-RUN_SERVER_SCRIPT_PATH="$(dirname "$0")/run_server.sh"       # runs the server
-MANAGER_SCRIPT_PATH="$(dirname "$0")/manager.sh"             # server manager script
+cd "$(dirname "$0")" || exit 1
+UPDATE_SERVER_SCRIPT_PATH="$(pwd)/UpdateServer.py"  # updates the server
+LOCAL_BACKUP_SCRIPT_PATH="$(pwd)/local_backup.sh"   # local server backup script
+REMOTE_BACKUP_SCRIPT_PATH="$(pwd)/remote_backup.sh" # remote server backup script
+RUN_SERVER_SCRIPT_PATH="$(pwd)/run_server.sh"       # runs the server
+MANAGER_SCRIPT_PATH="$(pwd)/manager.sh"             # server manager script
