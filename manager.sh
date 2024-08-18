@@ -2,6 +2,11 @@
 
 set -euo pipefail
 
+# Description:  Server manager script.
+#       Usage:  WIP
+
+source vars.sh
+
 # update the server
 # run the server if the update is successful
 if "$UPDATE_SERVER_SCRIPT_PATH"; then
