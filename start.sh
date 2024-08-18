@@ -10,9 +10,6 @@ cd "$(dirname "$0")"
 # source variables, functions, and constants
 source vars.sh
 
-# save path to vars.sh for later use
-VARS_PATH="$(pwd)/vars.sh"
-
 # check if python virtual environment exists
 # if not, create it
 if [ ! -d ".venv" ]; then
@@ -45,7 +42,8 @@ chmod +x "$UPDATE_SERVER_SCRIPT_PATH" "$LOCAL_BACKUP_SCRIPT_PATH" "$REMOTE_BACKU
 # cd to server directory
 cd "$SERVER_ROOT/$SERVER_NAME"
 
-echo "Starting server and server manager in tmux...
+echo "
+Starting server and server manager in tmux...
 "
 
 # make tmux sessions for the server and the server manager
@@ -53,7 +51,7 @@ echo "Starting server and server manager in tmux...
 start_tmux_sessions "$SERVER_NAME"
 
 # run the manager script
-tmux send-keys -t "${SERVER_NAME}_manager" "$MANAGER_SCRIPT_PATH $VARS_PATH" Enter
+tmux send-keys -t "${SERVER_NAME}_manager" "$MANAGER_SCRIPT_PATH" Enter
 
 echo "
 Server started.
