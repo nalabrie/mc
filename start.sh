@@ -50,6 +50,6 @@ start_tmux_sessions "$SERVER_NAME"
 # run the manager script
 tmux send-keys -t "${SERVER_NAME}_manager" "$MANAGER_SCRIPT_PATH" Enter
 
-info "Server started.
-Use 'tmux a -t $SERVER_NAME' to attach to the server console.
-Use 'tmux a -t ${SERVER_NAME}_manager' to attach to the server manager console."
+info "Server started."
+info "Use 'tmux a -t $SERVER_NAME' to attach to the server console."
+info "Use 'tmux a -t ${SERVER_NAME}_manager' to attach to the server manager console."
