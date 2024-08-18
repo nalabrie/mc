@@ -19,6 +19,23 @@ REMOTE_BACKUP_DIR="DISABLE"    # remote backup directory (set to DISABLE to disa
 # *** DO NOT CHANGE ANYTHING BELOW THIS LINE ***
 # **********************************************
 
+#? === FUNCTIONS ===
+
+# start all tmux sessions with a given name
+# pane will be 150x50 characters in size (to limit line wrapping when detached)
+# $1: session name
+start_tmux_sessions() {
+    tmux new-session -d -s "$1" -x 150 -y 50
+    tmux new-session -d -s "${1}_manager" -x 150 -y 50
+}
+
+# stop all tmux sessions with a given name
+# $1: session name
+stop_tmux_sessions() {
+    tmux kill-session -t "$1"
+    tmux kill-session -t "${1}_manager"
+}
+
 #? === SETUP ===
 
 # cd to script directory
@@ -60,8 +77,7 @@ chmod +x "$UPDATE_SERVER_SCRIPT_PATH" "$LOCAL_BACKUP_SCRIPT_PATH" "$REMOTE_BACKU
 cd "$SERVER_ROOT/$SERVER_NAME"
 
 # make tmux sessions for the server and the server manager
-tmux new-session -d -s "$SERVER_NAME"
-tmux new-session -d -s "${SERVER_NAME}_manager"
+start_tmux_sessions "$SERVER_NAME"
 
 # update the server
 # run the server if the update is successful
@@ -69,6 +85,7 @@ if "$UPDATE_SERVER_SCRIPT_PATH" "$SERVER_ROOT/$SERVER_NAME"; then
     tmux send-keys -t "$SERVER_NAME" "\"$RUN_SERVER_SCRIPT_PATH\" $RAM" Enter
 else
     echo "Failed to update the server. Server not started."
+    stop_tmux_sessions "$SERVER_NAME"
     exit 1
 fi
 
