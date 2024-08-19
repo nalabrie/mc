@@ -89,13 +89,51 @@ sleep_until_4am() {
     sleep "$sleep_time"
 }
 
+# function to warn the user on the server about the upcoming restart
+warn_restart() {
+    tmux send-keys -t "$SERVER_NAME" "say Server will restart in 1 minute for scheduled maintenance." Enter
+    sleep 30
+    tmux send-keys -t "$SERVER_NAME" "say Server will restart in 30 seconds." Enter
+    sleep 20
+    tmux send-keys -t "$SERVER_NAME" "say Server will restart in 10 seconds." Enter
+    sleep 5
+    tmux send-keys -t "$SERVER_NAME" "say Server will restart in 5 seconds." Enter
+    sleep 1
+    tmux send-keys -t "$SERVER_NAME" "say Server will restart in 4 seconds." Enter
+    sleep 1
+    tmux send-keys -t "$SERVER_NAME" "say Server will restart in 3 seconds." Enter
+    sleep 1
+    tmux send-keys -t "$SERVER_NAME" "say Server will restart in 2 seconds." Enter
+    sleep 1
+    tmux send-keys -t "$SERVER_NAME" "say Server will restart in 1 second." Enter
+    sleep 1
+}
+
+# checks if it is Monday (remote backup day)
+# returns 0 if true, 1 if false
+is_it_monday() {
+    if [ "$(date +%u)" -eq 1 ]; then
+        return 0
+    else
+        return 1
+    fi
+}
+
+# checks if the server has been idle since boot
+# (nobody has played since the server started, so no need to backup)
+# returns 0 if true, 1 if false
+is_server_idle_since_boot() {
+    pane_output=$(tmux capture-pane -t "$SERVER_NAME" -p)
+
+    # get the last line of the output
+    last_line=$(echo "$pane_output" | tail -n 1)
+
+    # check if the last line contains "Done"
+    if [[ "$last_line" == *"[Server thread/INFO]: Done"* ]]; then
+        return 0
+    else
+        return 1
+    fi
+}
+
 #? === MAIN LOOP ===
-
-# update the server
-# if the update fails, exit
-if ! update_server; then
-    exit 1
-fi
-
-# start the server
-start_server
