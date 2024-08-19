@@ -33,15 +33,6 @@ start_server() {
     tmux send-keys -t "$SERVER_NAME" "$RUN_SERVER_COMMAND" Enter
 }
 
-# stop the server
-stop_server() {
-    info "Stopping server..."
-    tmux send-keys -t "$SERVER_NAME" "stop" Enter
-    # TODO: check if the server has stopped before continuing
-    # for now just wait a minute
-    sleep 60
-}
-
 # create a local backup
 # returns 0 if successful, 1 if failed
 local_backup() {
@@ -160,6 +151,17 @@ is_server_shutdown() {
     else
         return 1
     fi
+}
+
+# stop the server
+stop_server() {
+    info "Stopping server..."
+    tmux send-keys -t "$SERVER_NAME" "stop" Enter
+
+    # wait until the server is completely shut down before continuing
+    while ! is_server_shutdown; do
+        sleep 1
+    done
 }
 
 #? === MAIN LOOP ===
