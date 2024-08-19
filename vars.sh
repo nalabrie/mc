@@ -47,10 +47,10 @@ start_tmux_sessions() {
 
 # stop all tmux sessions with a given name
 # $1: session name
-stop_tmux_sessions() {
-    tmux kill-session -t "$1"
-    tmux kill-session -t "${1}_manager"
-}
+# stop_tmux_sessions() {
+#     tmux kill-session -t "$1"
+#     tmux kill-session -t "${1}_manager"
+# }
 
 # define simple logging functions with color
 warn() {
