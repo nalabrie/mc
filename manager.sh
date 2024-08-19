@@ -33,6 +33,9 @@ start_server() {
 stop_server() {
     info "Stopping server..."
     tmux send-keys -t "$SERVER_NAME" "stop" Enter
+    # TODO: check if the server has stopped before continuing
+    # for now just wait a minute
+    sleep 60
 }
 
 # create a local backup
@@ -128,7 +131,7 @@ is_server_idle_since_boot() {
     # get the last line of the output
     last_line=$(echo "$pane_output" | tail -n 1)
 
-    # check if the last line contains "Done"
+    # check if the last line contains the "done message"
     if [[ "$last_line" == *"[Server thread/INFO]: Done"* ]]; then
         return 0
     else
@@ -137,3 +140,23 @@ is_server_idle_since_boot() {
 }
 
 #? === MAIN LOOP ===
+
+while true; do
+    update_server
+    start_server
+    sleep_until_4am
+    if is_server_idle_since_boot; then
+        stop_server
+        if is_it_monday; then
+            remote_backup
+        fi
+        continue
+    else
+        warn_restart
+        stop_server
+        local_backup
+        if is_it_monday; then
+            remote_backup
+        fi
+    fi
+done
