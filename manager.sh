@@ -157,11 +157,11 @@ is_server_shutdown() {
 stop_server() {
     info "Stopping server..."
     tmux send-keys -t "$SERVER_NAME" "stop" Enter
-    sleep 5
 
     # wait until the server is completely shut down before continuing
+    sleep 5 # for safety, but likely not needed
     while ! is_server_shutdown; do
-        sleep 2
+        sleep 5
     done
 }
 
