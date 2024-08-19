@@ -59,10 +59,10 @@ def update() -> bool:
 
             # validate server file
             if generate_sha1(f) != server_info["sha1"]:
-                print("ERROR: downloaded server file failed validation")
+                print("[ERROR]: downloaded server file failed validation")
                 return False
     else:
-        print("ERROR: server file could not be downloaded")
+        print("[ERROR]: server file could not be downloaded")
         return False
 
     # update "current version" file
@@ -115,7 +115,7 @@ def main(args: list[str]) -> int:
         # use user-provided version ID
         latest_version_id = args[1]
     elif len(args) > 2:
-        print("ERROR: user provided too many arguments (max: 1)\naborting")
+        print("[ERROR]: user provided too many arguments (max: 1)\naborting")
         return 1
     else:
         # find latest stable version ID

@@ -65,6 +65,30 @@ remote_backup() {
     return 0
 }
 
+# sleep until 4am
+sleep_until_4am() {
+    # get the current time
+    current_time=$(date +%s)
+
+    # get the time for 4am
+    # if it's already past 4am, set the time for 4am tomorrow
+    if [ "$(date +%H)" -ge 4 ]; then
+        target_time=$(date -d "tomorrow 4:00" +%s)
+    else
+        target_time=$(date -d "today 4:00" +%s)
+    fi
+
+    # calculate the time to sleep
+    sleep_time=$((target_time - current_time))
+
+    # calculate the wait time
+    wait_time=$(date -u -d @"$sleep_time" +'%-H hours, %-M minutes, %-S seconds')
+
+    # sleep until 4am
+    info "Sleeping until 4 AM... ($wait_time from now)"
+    sleep "$sleep_time"
+}
+
 #? === MAIN LOOP ===
 
 # update the server
