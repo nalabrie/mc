@@ -133,10 +133,29 @@ is_server_idle_since_boot() {
     pane_output=$(tmux capture-pane -t "$SERVER_NAME" -p)
 
     # get the last line of the output
-    last_line=$(echo "$pane_output" | tail -n 1)
+    # remove empty lines
+    last_line=$(echo "$pane_output" | grep -v '^$' | tail -n 1)
 
     # check if the last line contains the "done message"
     if [[ "$last_line" == *"[Server thread/INFO]: Done"* ]]; then
+        return 0
+    else
+        return 1
+    fi
+}
+
+# checks if the server was running but has since been completely shut down
+# returns 0 if true, 1 if false
+is_server_shutdown() {
+    pane_output=$(tmux capture-pane -t "$SERVER_NAME" -p)
+
+    # get the last 5 lines of the output
+    # remove empty lines
+    last_5_lines=$(echo "$pane_output" | grep -v '^$' | tail -n 5)
+
+    # check if the last 5 lines contain the "All dimensions are saved" message
+    # IMPORTANT: this message can change depending on the server version (working since 2021-07)
+    if [[ "$last_5_lines" == *"[Server thread/INFO]: ThreadedAnvilChunkStorage: All dimensions are saved"* ]]; then
         return 0
     else
         return 1
