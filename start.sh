@@ -25,6 +25,9 @@ source .venv/bin/activate
 info "Installing/updating python dependencies..."
 pip install --upgrade -r requirements.txt
 
+# deactivate python virtual environment
+deactivate
+
 # ensure all script paths exist
 for path in "$UPDATE_SERVER_SCRIPT_PATH" "$LOCAL_BACKUP_SCRIPT_PATH" "$REMOTE_BACKUP_SCRIPT_PATH" "$MANAGER_SCRIPT_PATH"; do
     if [ ! -f "$path" ]; then
@@ -52,7 +55,7 @@ cd "$SERVER_ROOT/$SERVER_NAME"
 info "Starting Minecraft server and server manager in tmux..."
 
 # make tmux sessions for the server and the server manager
-# they will inherit the current shell's environment (e.g. virtual environment, CWD, etc.)
+# they will inherit the working directory of this script
 # if the sessions already exist, execution will end here
 start_tmux_sessions "$SERVER_NAME"
 

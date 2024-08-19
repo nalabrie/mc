@@ -7,6 +7,10 @@ set -euo pipefail
 # source variables, functions, and constants
 source "$(dirname "$0")/vars.sh"
 
+# activate python virtual environment
+# shellcheck disable=SC1091
+source "$(dirname "$0")/.venv/bin/activate"
+
 # cd to server directory
 cd "$SERVER_ROOT/$SERVER_NAME"
 
