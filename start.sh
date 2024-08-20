@@ -57,3 +57,4 @@ tmux send-keys -t "${SERVER_NAME}_manager" "$MANAGER_SCRIPT_PATH" Enter
 info "Servers started."
 info "Use 'tmux a -t $SERVER_NAME' to attach to the server console."
 info "Use 'tmux a -t ${SERVER_NAME}_manager' to attach to the server manager console."
+info "To detach from a tmux session, press 'Ctrl+b' then 'd'."

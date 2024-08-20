@@ -21,6 +21,8 @@ RAM=10                         # server RAM (in GB)
 LOCAL_BACKUP_DIR="DISABLE"     # local backup directory (set to DISABLE to disable local backups)
 REMOTE_BACKUP_DIR="DISABLE"    # remote backup directory (set to DISABLE to disable remote backups)
 
+# TODO: explain all the user variables in more detail
+
 # **********************************************
 # *** DO NOT CHANGE ANYTHING BELOW THIS LINE ***
 # **********************************************
