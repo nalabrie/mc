@@ -1,5 +1,12 @@
 # shellcheck disable=SC2034
 
+# Description:
+#   This script contains variables, functions, and constants that are used by other scripts.
+#   It should be sourced by other scripts, not ran directly.
+#
+# Usage:
+#   Edit the "USER VARIABLES" section to suit your setup.
+
 #? === USER VARIABLES ===
 
 # **********************************************

@@ -2,6 +2,15 @@
 
 set -euo pipefail
 
+# Description:
+#   This script starts a Minecraft server and a server manager in tmux.
+#   The server manager updates the server, starts the server, creates local backups, and creates remote backups.
+
+# Usage:
+#   Make sure to edit the "USER VARIABLES" section in vars.sh before running this script.
+#   Run this script to start the Minecraft server and server manager.
+#   They will run in separate tmux sessions. Use 'tmux a -t <session_name>' to attach to a session.
+
 #? === SETUP ===
 
 # cd to this script's directory

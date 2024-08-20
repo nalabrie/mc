@@ -2,6 +2,18 @@
 
 set -euo pipefail
 
+# Description:
+#   This script is a server manager for a Minecraft server.
+#   It updates the server, starts the server, creates local backups, and creates remote backups.
+#   The server restarts at 4 AM every day.
+#   If the server has not been played since boot, it will not create local backups.
+#   If the server is not idle, it will warn the users about the restart, stop the server, create a local backup, and create a remote backup if it is Monday.
+#   The script will loop indefinitely.
+#
+# Usage:
+#   This script is not intended to be ran directly.
+#   It should instead be run by the start.sh script.
+
 #? === SETUP ===
 
 # source variables, functions, and constants

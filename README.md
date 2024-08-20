@@ -6,8 +6,10 @@ Linux port of the Minecraft server scripts that I used on Windows.
 
 ### Required
 
+- bash
 - java
   - JRE or JDK
+  - Can be headless
   - Latest LTS version is recommended
 - python 3
 - tmux

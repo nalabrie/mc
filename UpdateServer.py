@@ -1,8 +1,22 @@
 #!/usr/bin/env python
 
-# Description:  This script is used to update a Minecraft server to the latest release.
-#               Run this script in the same directory as the server.jar file.
-#       Usage:  UpdateServer.py [version ID]
+# Description:
+#   This script will download the latest stable version of the Minecraft server.jar file.
+#   It will check if the server is already up-to-date and will only download the server file if an update is needed.
+#   The file "server_version.txt" will be created to store the currently installed server version.
+#   The downloaded server file will be validated using the sha1 hash provided by Mojang.
+#
+# Usage:
+#   This script is not intended to be ran directly.
+#   The manager.sh script will call this script before starting the server.
+#
+#   However, the script can be ran manually from the command line with the following command:
+#   python UpdateServer.py [version_id]
+#
+#   Things to keep in mind when running the script manually:
+#     - "version_id" is optional. Specifies a server version to download by ID (default: latest stable version).
+#     - Files will be downloaded to the current working directory.
+#     - The script will exit with a return code of 0 on success and 1 on failure.
 
 from hashlib import sha1
 from sys import argv, exit
