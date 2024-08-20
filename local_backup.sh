@@ -26,6 +26,12 @@ if [ ! -d "$SERVER_NAME" ]; then
     exit 1
 fi
 
+# check if the local backup directory exists
+if [ ! -d "$LOCAL_BACKUP_DIR" ]; then
+    error "Local backup directory '$LOCAL_BACKUP_DIR' does not exist, cannot make a local backup."
+    exit 1
+fi
+
 # ensure local backup directories exist
 for i in $(seq 1 $LAYERS); do
     if [ ! -d "$LOCAL_BACKUP_DIR/$SERVER_NAME/lvl_$i" ]; then

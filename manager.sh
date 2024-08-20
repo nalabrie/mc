@@ -16,7 +16,6 @@ set -euo pipefail
 
 #? === SETUP ===
 
-# source variables, functions, and constants
 source "$(dirname "$0")/vars.sh"
 
 # activate python virtual environment

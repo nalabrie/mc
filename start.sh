@@ -16,7 +16,6 @@ set -euo pipefail
 # cd to this script's directory
 cd "$(dirname "$0")"
 
-# source variables, functions, and constants
 source vars.sh
 
 # check if python virtual environment exists
@@ -36,22 +35,6 @@ pip install --upgrade -r requirements.txt
 
 # deactivate python virtual environment
 deactivate
-
-# ensure all script paths exist
-for path in "$UPDATE_SERVER_SCRIPT_PATH" "$LOCAL_BACKUP_SCRIPT_PATH" "$REMOTE_BACKUP_SCRIPT_PATH" "$MANAGER_SCRIPT_PATH"; do
-    if [ ! -f "$path" ]; then
-        error "'$path' does not exist."
-        exit 1
-    fi
-done
-
-# ensure all directories exist
-for dir in "$SERVER_ROOT" "$SERVER_ROOT/$SERVER_NAME"; do
-    if [ ! -d "$dir" ]; then
-        error "'$dir' does not exist."
-        exit 1
-    fi
-done
 
 # if the scripts are not executable, make them executable
 chmod +x "$UPDATE_SERVER_SCRIPT_PATH" "$LOCAL_BACKUP_SCRIPT_PATH" "$REMOTE_BACKUP_SCRIPT_PATH" "$MANAGER_SCRIPT_PATH"
