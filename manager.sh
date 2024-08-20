@@ -41,10 +41,13 @@ local_backup() {
         return 0
     fi
 
+    info "Creating local backups..."
+
     if ! "$LOCAL_BACKUP_SCRIPT_PATH"; then
-        error "Failed to create a local backup."
+        error "Failed to create a local backups."
         return 1
     fi
+    info "Local backups created successfully."
     return 0
 }
 

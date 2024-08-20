@@ -17,6 +17,14 @@ REMOTE_BACKUP_DIR="DISABLE"    # remote backup directory (set to DISABLE to disa
 # *** DO NOT CHANGE ANYTHING BELOW THIS LINE ***
 # **********************************************
 
+#? === CLEANUP ===
+
+# make sure all user supplied paths do not contain a trailing slash
+SERVER_ROOT="${SERVER_ROOT%/}"
+SERVER_NAME="${SERVER_NAME%/}"
+LOCAL_BACKUP_DIR="${LOCAL_BACKUP_DIR%/}"
+REMOTE_BACKUP_DIR="${REMOTE_BACKUP_DIR%/}"
+
 #? === CONSTANTS ===
 
 # paths to scripts
