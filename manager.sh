@@ -30,10 +30,12 @@ cd "$SERVER_ROOT/$SERVER_NAME"
 # update the server
 # returns 0 if successful, 1 if failed
 update_server() {
+    info "Updating server..."
     if ! "$UPDATE_SERVER_SCRIPT_PATH"; then
         error "Failed to update the server."
         return 1
     fi
+    info "Server updated successfully."
     return 0
 }
 
@@ -70,10 +72,14 @@ remote_backup() {
         return 0
     fi
 
+    info "Creating remote backup..."
+
     if ! "$REMOTE_BACKUP_SCRIPT_PATH"; then
         error "Failed to create a remote backup."
         return 1
     fi
+
+    info "Remote backup created successfully."
     return 0
 }
 
@@ -103,6 +109,7 @@ sleep_until_4am() {
 
 # function to warn the user on the server about the upcoming restart
 warn_restart() {
+    info "Warning users about the restart in 1 minute..."
     tmux send-keys -t "$SERVER_NAME" "say Server will restart in 1 minute for scheduled maintenance." Enter
     sleep 30
     tmux send-keys -t "$SERVER_NAME" "say Server will restart in 30 seconds." Enter
