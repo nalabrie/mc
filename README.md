@@ -36,6 +36,8 @@ Output of these tasks is logged to the tmux session of the server manager.
 
 - 7zip (for remote backups)
 - rsync (for local backups)
+- MEGAcmd (for remote backups using MEGA)
+- Distrobox (if using a container to run MEGAcmd)
 
 ## Usage
 

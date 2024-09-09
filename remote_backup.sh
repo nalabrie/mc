@@ -46,8 +46,19 @@ fi
 # create a 7z archive of the server directory
 # file is named like: SERVER_NAME_YYYY-MM-DD_HH-MM-SS.7z
 # -mx=7: "high" compression
-"$SEVENZ" a -mx=7 "${REMOTE_BACKUP_DIR}/${SERVER_NAME}_$(date +%Y-%m-%d_%H-%M-%S).7z" "$SERVER_NAME"
+archive_path="${REMOTE_BACKUP_DIR}/${SERVER_NAME}_$(date +%Y-%m-%d_%H-%M-%S).7z"
+"$SEVENZ" a -mx=7 "$archive_path" "$SERVER_NAME"
 
-# TODO: instead of just making an archive and leaving it up to the user to manage, utilize a cloud storage service API to upload the archive to the cloud automatically (for example: https://github.com/meganz/MEGAcmd)
+if [ $MEGA_REMOTE_PATH != "DISABLE" ]; then
+    # upload the archive to the remote backup directory
+    if [ $DISTROBOX_DISTRO != "DISABLE" ]; then
+        distrobox enter $DISTROBOX_DISTRO -- mega-put --ignore-quota-warn -cq "$archive_path" "$MEGA_REMOTE_PATH"
+    else
+        mega-put --ignore-quota-warn -cq "$archive_path" "$MEGA_REMOTE_PATH"
+    fi
+    info "Archive is uploading to MEGA in the background."
+else
+    warn "Archive is not being uploaded to MEGA because MEGA_REMOTE_PATH is set to DISABLE. The archive is saved locally."
+fi
 
 exit 0

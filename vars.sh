@@ -19,7 +19,9 @@ SERVER_ROOT="$HOME/.local/srv" # root directory for all servers (parent director
 SERVER_NAME="example_name"     # server name (server directory name)
 RAM=10                         # server RAM (in GB)
 LOCAL_BACKUP_DIR="DISABLE"     # local backup directory (set to DISABLE to disable local backups)
-REMOTE_BACKUP_DIR="DISABLE"    # remote backup directory (set to DISABLE to disable remote backups)
+REMOTE_BACKUP_DIR="DISABLE"    # remote backup directory (set to DISABLE to disable archive backups)
+MEGA_REMOTE_PATH="DISABLE"     # remote path on MEGA cloud storage (set to DISABLE to disable MEGA backups)
+DISTROBOX_DISTRO="DISABLE"     # distrobox distro to use for MEGA cloud backups (set to DISABLE to use native MEGAcmd)
 
 # TODO: explain all the user variables in more detail
 
@@ -86,6 +88,22 @@ if [ ! -d "$SERVER_ROOT" ] || [ ! -d "$SERVER_ROOT/$SERVER_NAME" ]; then
     exit 1
 fi
 
+if [ "$MEGA_REMOTE_PATH" != "DISABLE" ] && [ "$DISTROBOX_DISTRO" = "DISABLE" ]; then
+    # check if mega-put is installed
+    if ! command -v mega-put &>/dev/null; then
+        error "MEGAcmd is not installed but MEGA remote path is set. Either install MEGAcmd or disable MEGA backups."
+        exit 1
+    fi
+fi
+
+if [ "$MEGA_REMOTE_PATH" != "DISABLE" ] && [ "$DISTROBOX_DISTRO" != "DISABLE" ]; then
+    # check if distrobox is installed
+    if ! command -v distrobox &>/dev/null; then
+        error "Distrobox is not installed but MEGA remote path is set and configured to use MEGAcmd within a distrobox container. Either install and setup MEGAcmd in a Distrobox, disable MEGA backups, or use MEGAcmd natively."
+        exit 1
+    fi
+fi
+
 # ensure all scripts exist
 for path in "$UPDATE_SERVER_SCRIPT_PATH" "$LOCAL_BACKUP_SCRIPT_PATH" "$REMOTE_BACKUP_SCRIPT_PATH" "$MANAGER_SCRIPT_PATH"; do
     if [ ! -f "$path" ]; then
@@ -94,19 +112,19 @@ for path in "$UPDATE_SERVER_SCRIPT_PATH" "$LOCAL_BACKUP_SCRIPT_PATH" "$REMOTE_BA
     fi
 done
 
-# if local backups are enabled, check for either 7z or 7zz
+# if remote backups are enabled, check for either 7z or 7zz
 # only one of them is required
 # if both are installed, 7zz will be used
-if [ "$LOCAL_BACKUP_DIR" != "DISABLE" ]; then
+if [ "$REMOTE_BACKUP_DIR" != "DISABLE" ]; then
     if ! command -v 7z &>/dev/null && ! command -v 7zz &>/dev/null; then
-        error "Local backups are enabled but 7zip (7z or 7zz) is not installed. Either install 7zip or disable local backups."
+        error "Remote backups are enabled but 7zip (7z or 7zz) is not installed. Either install 7zip or disable remote backups."
         exit 1
     fi
 fi
 
-# if remote backups are enabled, check for rsync
-if [ "$REMOTE_BACKUP_DIR" != "DISABLE" ] && ! command -v rsync &>/dev/null; then
-    error "Remote backups are enabled but rsync is not installed. Either install rsync or disable remote backups."
+# if local backups are enabled, check for rsync
+if [ "$LOCAL_BACKUP_DIR" != "DISABLE" ] && ! command -v rsync &>/dev/null; then
+    error "Local backups are enabled but rsync is not installed. Either install rsync or disable local backups."
     exit 1
 fi
 
