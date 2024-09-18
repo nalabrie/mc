@@ -14,7 +14,7 @@ set -euo pipefail
 
 #? === SETUP ===
 
-RSYNC_COMMAND="rsync --archive -hh --partial --delete --info=stats1,progress2"
+RSYNC_COMMAND="rsync --archive -hhh --partial --delete --info=stats1,progress2"
 LAYERS=6 # number of backup levels
 
 source "$(dirname "$0")/vars.sh"
